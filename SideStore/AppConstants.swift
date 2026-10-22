@@ -98,9 +98,10 @@ public enum AppConstants {
 
         public enum Servers {
             public static let defaultSource        = "https://servers.sidestore.io/servers.json"
-            // Default to Windows ADI server (temporary auth fix). Users can switch to any server in Settings.
-            public static let defaultServerURL     = "https://win.ani.sidestore.io"
-            public static let secondaryServerURL   = "https://ani.jkcoxson.com"
+            // SideStore's Windows-ADI endpoint (win.ani.sidestore.io) returns 502;
+            // jkcoxson's Windows-ADI server is live. Fall back to the main server.
+            public static let defaultServerURL     = "https://ani.jkcoxson.com"
+            public static let secondaryServerURL   = "https://ani.sidestore.io"
             public static let connectivityCheckURL = URL(string: "https://www.apple.com/library/test/success.html")!
         }
 
