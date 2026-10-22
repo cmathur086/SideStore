@@ -14,11 +14,15 @@ public extension FileManager
         #if os(tvOS)
         return self.cachesDirectory
         #else
-        guard let appGroup = Bundle.main.altstoreAppGroup else {
-            return nil
+        // Sideloaded builds signed with a wildcard profile have no App Group
+        // entitlement, so containerURL returns nil. Fall back to the app's own
+        // container instead of failing outright: the main app stays fully
+        // functional, while the widget simply keeps its own separate data.
+        guard let appGroup = Bundle.main.altstoreAppGroup,
+              let sharedDirectoryURL = self.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            return self.documentsDirectory
         }
-        
-        let sharedDirectoryURL = self.containerURL(forSecurityApplicationGroupIdentifier: appGroup)
+
         return sharedDirectoryURL
         #endif
     }
